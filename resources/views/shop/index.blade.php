@@ -74,99 +74,134 @@
                     </div>
                 </div>
             </div>
+        @empty
+            <p class="text-center">No products available at the moment.</p>
+        @endforelse
+    </div>
 
-  <!-- PRODUCT VIEW MODAL -->
-<div class="modal fade" id="productModal{{ $product->id }}" tabindex="-1" aria-labelledby="productModalLabel{{ $product->id }}" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="productModalLabel{{ $product->id }}">{{ $product->name }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+    {{-- Product Modals --}}
+    @foreach ($products as $product)
+    <div class="modal fade" id="productModal{{ $product->id }}" tabindex="-1" aria-labelledby="productModalLabel{{ $product->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-3">
 
-            <div class="modal-body row">
-                <div class="col-md-5 text-center">
-                    @if ($product->picture)
-                        <img src="{{ asset('storage/' . $product->picture) }}" alt="{{ $product->name }}" class="img-fluid rounded">
-                    @else
-                        <img src="{{ asset('default-product.jpg') }}" alt="No image" class="img-fluid rounded">
-                    @endif
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="productModalLabel{{ $product->id }}">{{ $product->name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="col-md-7">
-                    <p><strong>Price:</strong> ₱{{ number_format($product->price, 2) }}</p>
-                    <p><strong>Stock:</strong> {{ $product->stock }}</p>
-                    <p><strong>Description:</strong> {{ $product->description }}</p>
+                <div class="modal-body row gy-3">
 
-                    <hr>
-
-                    <!-- Average Rating -->
-                    <p>
-                        <strong>Average Rating:</strong>
-                        @if ($product->averageRating())
-                            {{ number_format($product->averageRating(), 1) }} / 5 ⭐
-                        @else
-                            Not yet rated
-                        @endif
-                    </p>
-
-                    <!-- Customer Rating Form -->
-                    @auth
-                        @if (auth()->user()->role === 'customer')
-                            <form action="{{ route('ratings.store') }}" method="POST" class="mb-3">
-                                @csrf
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-
-                                <div class="mb-2">
-                                    <label for="rating" class="form-label">Your Rating</label>
-                                    <select name="rating" class="form-select" required>
-                                        <option value="">Select Rating</option>
-                                        @for ($i = 5; $i >= 1; $i--)
-                                            <option value="{{ $i }}">{{ $i }} star{{ $i > 1 ? 's' : '' }}</option>
-                                        @endfor
-                                    </select>
-                                </div>
-
-                                <div class="mb-2">
-                                    <label for="review" class="form-label">Review (optional)</label>
-                                    <textarea name="review" rows="2" class="form-control" placeholder="Write your review here..."></textarea>
-                                </div>
-
-                                <button type="submit" class="btn btn-primary btn-sm">Submit Rating</button>
-                            </form>
-                        @endif
-                    @endauth
-
-                    <!-- All Ratings -->
-                    <div>
-                        <h6>Customer Reviews:</h6>
-                        @forelse ($product->ratings as $rating)
-                            <div class="border rounded p-2 mb-2">
-                                <strong>{{ $rating->user->name }}</strong> 
-                                <span class="text-warning">({{ $rating->rating }}★)</span>
-                                <p class="mb-0">{{ $rating->review ?? 'No written review.' }}</p>
-                                <small class="text-muted">{{ $rating->created_at->diffForHumans() }}</small>
-                            </div>
-                        @empty
-                            <p>No reviews yet.</p>
-                        @endforelse
+                    <!-- Product Image -->
+                    <div class="col-md-5 text-center">
+                        <img src="{{ $product->picture ? asset('storage/' . $product->picture) : asset('images/no-image.png') }}"
+                             alt="{{ $product->name }}"
+                             class="img-fluid rounded shadow-sm"
+                             style="max-height: 300px; object-fit: contain;">
                     </div>
-                </div>
-            </div>
 
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <!-- Product Info and Actions -->
+                    <div class="col-md-7 d-flex flex-column justify-content-between">
+                        <div>
+                            <p><strong>Price:</strong> <span class="text-danger fs-4 fw-bold">₱{{ number_format($product->price, 2) }}</span></p>
+                            <p><strong>Stock:</strong> {{ $product->stock }}</p>
+                            <p><strong>Description:</strong> {{ $product->description }}</p>
+
+                            <hr>
+
+                            <!-- Modal Footer: Add to Cart + Buy Now -->
+                            @if($product->stock > 0)
+                            <div class="d-flex flex-wrap gap-3 mb-3">
+                                <!-- Add to Cart Form -->
+                                <form action="{{ route('cart.add', $product->id) }}" method="POST" class="d-flex align-items-center gap-2">
+                                    @csrf
+                                    <input type="number" name="quantity" value="1" min="1" max="{{ $product->stock }}" class="form-control form-control-sm" style="width: 80px;">
+                                    <button type="submit" class="btn btn-outline-primary btn-sm px-4">Add to Cart</button>
+                                </form>
+
+                                <!-- Buy Now Form -->
+                                <form action="{{ route('order.place', $product->id) }}" method="POST" class="d-flex align-items-center gap-2">
+                                    @csrf
+                                    <input
+                                        type="number"
+                                        name="quantity"
+                                        min="1"
+                                        max="{{ $product->stock }}"
+                                        value="1"
+                                        class="form-control form-control-sm"
+                                        style="width: 80px;"
+                                        required
+                                    >
+                                    <button type="submit" class="btn btn-primary btn-sm px-4">Buy Now</button>
+                                </form>
+                            </div>
+                            @else
+                            <div class="mt-3">
+                                <p class="text-danger fw-semibold">This product is currently out of stock.</p>
+                            </div>
+                            @endif
+
+                            <hr>
+
+                            <!-- Average Rating -->
+                            <p>
+                                <strong>Average Rating:</strong>
+                                @if ($product->averageRating())
+                                    {{ number_format($product->averageRating(), 1) }} / 5 ⭐
+                                @else
+                                    Not yet rated
+                                @endif
+                            </p>
+
+                            <!-- Customer Rating Form -->
+                            @auth
+                                @if (auth()->user()->role === 'customer')
+                                    <form action="{{ route('ratings.store') }}" method="POST" class="mb-3">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+                                        <div class="mb-2">
+                                            <label for="rating" class="form-label">Your Rating</label>
+                                            <select name="rating" class="form-select" required>
+                                                <option value="">Select Rating</option>
+                                                @for ($i = 5; $i >= 1; $i--)
+                                                    <option value="{{ $i }}">{{ $i }} star{{ $i > 1 ? 's' : '' }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-2">
+                                            <label for="review" class="form-label">Review (optional)</label>
+                                            <textarea name="review" rows="2" class="form-control" placeholder="Write your review here..."></textarea>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary btn-sm">Submit Rating</button>
+                                    </form>
+                                @endif
+                            @endauth
+
+                            <!-- Customer Reviews -->
+                            <div>
+                                <h6 class="fw-semibold">Customer Reviews:</h6>
+                                @forelse ($product->ratings as $rating)
+                                    <div class="border rounded p-3 mb-2">
+                                        <strong>{{ $rating->user->name }}</strong>
+                                        <span class="text-warning">({{ $rating->rating }}★)</span>
+                                        <p class="mb-1">{{ $rating->review ?? 'No written review.' }}</p>
+                                        <small class="text-muted">{{ $rating->created_at->diffForHumans() }}</small>
+                                    </div>
+                                @empty
+                                    <p>No reviews yet.</p>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>
-</div>
-        @empty
-            <div class="col-12">
-                <div class="alert alert-info text-center" role="alert">
-                    No products available at the moment.
-                </div>
-            </div>
-        @endforelse
-    </div>
+    @endforeach
 </div>
 @endsection

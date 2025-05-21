@@ -29,9 +29,11 @@ class LoginController extends Controller
 
     // ✅ Attempt login
     if (Auth::attempt($credentials)) {
-        $request->session()->regenerate(); // Prevent session fixation
-        return redirect()->intended('/shop'); // Or your preferred route
-    }
+    $request->session()->regenerate(); // Prevent session fixation
+
+    // ✅ Use the "authenticated" method for role-based redirects
+    return $this->authenticated($request, Auth::user());
+}
 
     // ❌ Failed login
     return back()->withErrors([
@@ -49,7 +51,7 @@ protected function authenticated(Request $request, $user)
     } elseif ($user->role === 'delivery') {
         return redirect()->route('delivery.dashboard');
     } else {
-        return redirect()->route('customer.dashboard');
+        return redirect()->route('shop');
     }
 }
     
