@@ -26,7 +26,7 @@
                 <tr>
                     <td>
                         @if($product->picture)
-                            <img src="{{ asset('storage/' . $product->picture) }}" width="60" height="60" style="object-fit: cover;">
+                            <img src="{{ asset('storage/app/public/' . $product->picture) }}" width="60" height="60" style="object-fit: cover;">
                         @else
                             <img src="{{ asset('images/no-image.png') }}" width="60" height="60">
                         @endif
