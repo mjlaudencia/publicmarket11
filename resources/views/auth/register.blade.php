@@ -13,7 +13,7 @@
 
         {{-- Logo --}}
         <div class="text-center mb-4">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" style="max-width: 150px; height: auto;">
+            <img src="{{ asset('storage/app/public/images/logo.png') }}" alt="Logo" style="max-width: 150px; height: auto;">
         </div>
 
         <h2 class="text-center mb-4 fw-bold" style="color: #d32f2f;">Register</h2>
