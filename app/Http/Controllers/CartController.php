@@ -10,15 +10,21 @@ use Illuminate\Support\Facades\Auth;
 class CartController extends Controller
 {
     public function index()
-    {
-        $cartItems = CartItem::with('product')
-            ->where('user_id', Auth::id())
-            ->get();
+{
+    $cartItems = CartItem::with('product')
+        ->where('user_id', Auth::id())
+        ->get();
 
-        $totalPrice = $cartItems->sum(fn($item) => $item->product->price * $item->quantity);
+    // Filter out items with missing product
+    $validItems = $cartItems->filter(fn($item) => $item->product !== null);
 
-        return view('customer.cart.index', compact('cartItems', 'totalPrice'));
-    }
+    $totalPrice = $validItems->sum(fn($item) => $item->product->price * $item->quantity);
+
+    return view('customer.cart.index', [
+        'cartItems' => $validItems,
+        'totalPrice' => $totalPrice,
+    ]);
+}
 
 
 public function add(Request $request, $productId)
