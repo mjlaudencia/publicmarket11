@@ -82,7 +82,7 @@
                         <input type="file" name="image" class="form-control" accept="image/*">
                         @if($product->picture)
                             <small class="text-muted d-block mt-2">Current image: 
-                                <img src="{{ asset('storage/' . $product->picture) }}" width="40" height="40" class="ms-2" style="object-fit: cover;">
+                                <img src="{{ asset('storage/app/public/' . $product->picture) }}" width="40" height="40" class="ms-2" style="object-fit: cover;">
                             </small>
                         @endif
                     </div>
