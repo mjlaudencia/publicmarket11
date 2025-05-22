@@ -94,7 +94,7 @@
 
                     <!-- Product Image -->
                     <div class="col-md-5 text-center">
-                        <img src="{{ $product->picture ? asset('storage/' . $product->picture) : asset('images/no-image.png') }}"
+                        <img src="{{ $product->picture ? asset('storage/app/public/' . $product->picture) : asset('images/no-image.png') }}"
                              alt="{{ $product->name }}"
                              class="img-fluid rounded shadow-sm"
                              style="max-height: 300px; object-fit: contain;">
