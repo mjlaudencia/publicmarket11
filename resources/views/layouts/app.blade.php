@@ -87,7 +87,7 @@
                             $cartCount = \App\Models\CartItem::where('user_id', auth()->id())->count();
                         @endphp
                         <li class="nav-item">
-                            <a href="{{ route('cart.index') }}" class="btn btn-warning position-relative">
+                            <a href="{{ route('cart.index') }}" class="btn btn-warningposition-relative">
                                 <i class="bi bi-cart3"></i>
                                 @if($cartCount > 0)
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">

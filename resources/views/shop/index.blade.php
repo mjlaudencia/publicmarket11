@@ -22,7 +22,7 @@
         object-fit: cover;
     }
 
-    .card:hover .card-img-top {
+    .card:hover .card-img-top { 
         transform: scale(1.05);
     }
 
@@ -62,7 +62,7 @@
         @forelse ($products as $product)
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm" data-bs-toggle="modal" data-bs-target="#productModal{{ $product->id }}">
-                    <img src="{{ $product->picture ? asset('storage/' . $product->picture) : asset('images/no-image.png') }}"
+                    <img src="{{ $product->picture ? asset('storage/app/public/' . $product->picture) : asset('images/no-image.png') }}"
                          class="card-img-top"
                          alt="{{ $product->name }}">
                     <div class="card-body text-center">
