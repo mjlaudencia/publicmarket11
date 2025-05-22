@@ -17,27 +17,39 @@
             </thead>
             <tbody>
                 @foreach($cartItems as $item)
-                <tr>
-                    <td>{{ $item->product->name }}</td>
-                    <td>
-                        <form action="{{ route('cart.update', $item->id) }}" method="POST" class="d-flex">
-                            @csrf
-                            @method('PUT')
-                            <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" class="form-control w-50">
-                            <button type="submit" class="btn btn-sm btn-primary ms-2">Update</button>
-                        </form>
-                    </td>
-                    <td>₱{{ $item->product->price }}</td>
-                    <td>₱{{ $item->product->price * $item->quantity }}</td>
-                    <td>
-                        <form action="{{ route('cart.remove', $item->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger btn-sm">Remove</button>
-                        </form>
-                    </td>
-                </tr>
+                    <tr>
+                        @if ($item->product)
+                            <td>{{ $item->product->name }}</td>
+                            <td>
+                                <form action="{{ route('cart.update', $item->id) }}" method="POST" class="d-flex">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" class="form-control w-50">
+                                    <button type="submit" class="btn btn-sm btn-primary ms-2">Update</button>
+                                </form>
+                            </td>
+                            <td>₱{{ $item->product->price }}</td>
+                            <td>₱{{ $item->product->price * $item->quantity }}</td>
+                            <td>
+                                <form action="{{ route('cart.remove', $item->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </td>
+                        @else
+                            <td colspan="5" class="text-danger">
+                                This product is no longer available.
+                                <form action="{{ route('cart.remove', $item->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger btn-sm ms-2">Remove</button>
+                                </form>
+                            </td>
+                        @endif
+                    </tr>
                 @endforeach
+
                 <tr>
                     <td colspan="3"><strong>Total:</strong></td>
                     <td colspan="2"><strong>₱{{ $totalPrice }}</strong></td>

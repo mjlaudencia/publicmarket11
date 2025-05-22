@@ -28,7 +28,7 @@
                     placeholder="Name" 
                     required 
                     autofocus
-                >
+                >   
             </div>
             <div class="mb-3">
                 <input 
