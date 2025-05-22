@@ -61,7 +61,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/') }}">
-    <img src="{{ asset('images/logo.png') }}" alt="Logo" height="50" style="object-fit: contain;">
+    <img src="{{ asset('storage/app/public/images/logo.png') }}" alt="Logo" height="50" style="object-fit: contain;">
 </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
