@@ -45,6 +45,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/vendors', [AdminController::class, 'viewVendors'])->name('vendors');
     Route::resource('products', ProductController::class);
 });
+Route::get('/register-user', [AdminUserController::class, 'showRegisterForm'])->name('register-user');
+Route::post('/register-user', [AdminUserController::class, 'registerUser'])->name('register-user.store');
+Route::get('/admin/users', [App\Http\Controllers\AdminController::class, 'manageUsers'])->name('admin.users');
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/customers', [AdminController::class, 'viewCustomers'])->name('admin.customers');
+});
+
 
 // Vendor Routes
 Route::middleware(['auth', 'role:vendor'])->prefix('vendor')->name('vendor.')->group(function () {

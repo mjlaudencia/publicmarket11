@@ -45,6 +45,19 @@
     <h2 class="mb-4 fw-bold text-danger">Admin Dashboard</h2>
 
     <div class="row g-4 mb-5">
+        <!-- All Users Card -->
+        <div class="col-md-3">
+            <div class="card border-0 shadow h-100 bg-light">
+                <div class="card-body text-center">
+                    <h6 class="text-danger">Users</h6>
+                    <h2 class="text-dark">{{ $vendors + $customers }}</h2>
+                    <p class="mb-2">All Users</p>
+                    <a href="{{ route('admin.users') }}" class="btn btn-sm btn-danger">Manage</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other Metric Cards -->
         <div class="col-md-3">
             <div class="card border-0 shadow h-100 bg-light">
                 <div class="card-body text-center">
@@ -62,7 +75,7 @@
                     <h6 class="text-danger">Customers</h6>
                     <h2 class="text-dark">{{ $customers }}</h2>
                     <p class="mb-2">Registered Customers</p>
-                    <a href="#" class="btn btn-sm btn-danger">View</a>
+                    <a href="{{ route('admin.customers') }}" class="btn btn-sm btn-danger">View</a>
                 </div>
             </div>
         </div>
@@ -172,16 +185,15 @@
         <div class="col-md-4">
             <div class="card shadow-sm p-3 bg-light border-danger border-2">
                 <h5 class="text-danger">Top-Rated Seller</h5>
-             @if(isset($highestReviewedSeller) && $highestReviewedSeller)
-    <p>{{ $highestReviewedSeller->name }}
-        <span class="badge bg-secondary">
-            {{ number_format($highestReviewedSeller->ratings_avg_rating ?? 0, 1) }} stars
-        </span>
-    </p>
-@else
-    <p class="text-muted">No seller ratings yet.</p>
-@endif
-
+                @if(isset($highestReviewedSeller) && $highestReviewedSeller)
+                    <p>{{ $highestReviewedSeller->name }}
+                        <span class="badge bg-secondary">
+                            {{ number_format($highestReviewedSeller->ratings_avg_rating ?? 0, 1) }} stars
+                        </span>
+                    </p>
+                @else
+                    <p class="text-muted">No seller ratings yet.</p>
+                @endif
             </div>
         </div>
     </div>
