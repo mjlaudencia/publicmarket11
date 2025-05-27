@@ -17,7 +17,6 @@
                         <th>Customer Name</th>
                         <th>Customer Address</th>
                         <th>Customer Contact</th>
-                        <th>Status</th>
                         <th>Delivery Status</th>
                         <th>Action</th>
                     </tr>
