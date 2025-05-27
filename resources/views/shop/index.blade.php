@@ -53,7 +53,7 @@
                     </form>
 
                         <!-- Buy Now Form -->
-                        <form action="{{ route('checkout.buyNow', ['productId' => $product->id]) }}" method="POST">
+                        <form method="POST" action="{{ route('order.place', $product->id) }}">
                         @csrf
                         <input type="hidden" name="quantity" value="1">
                         <button type="submit" class="btn btn-success">Buy Now</button>
