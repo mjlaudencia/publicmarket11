@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\Rating;
 
+
 class AdminController extends Controller
 {
     public function dashboard()
@@ -63,19 +64,15 @@ class AdminController extends Controller
     }
 
 
-    public function manageUsers()
+public function manageUsers()
 {
-    $users = User::all(); // Import User model at the top if not yet
+    $users = User::all();
     return view('admin.manage-users', compact('users'));
 }
-
-
-use App\Models\User;
 
 public function viewCustomers()
 {
     $customers = User::where('role', 'customer')->get();
-
     return view('admin.customers', compact('customers'));
 }
 

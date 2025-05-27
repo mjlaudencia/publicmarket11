@@ -15,6 +15,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\AdminUserController;
+
 
 /*
 |--------------------------------------------------------------------------
