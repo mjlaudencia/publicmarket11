@@ -6,6 +6,7 @@
 <div class="container py-4">
     <h2 class="text-danger mb-4">Manage Users</h2>
 
+    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -27,6 +28,5 @@
         </tbody>
     </table>
 
-    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
 </div>
 @endsection
