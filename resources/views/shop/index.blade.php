@@ -46,17 +46,19 @@
 
                     <div class="modal-footer">
                         <!-- Add to Cart Form -->
-                   <form action="{{ route('cart.add', ['productId' => $product->id]) }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="quantity" value="1">
-                    <button type="submit" class="btn btn-primary">Add to Cart</button>
-                    </form>
+                        <form action="{{ route('cart.add') }}" method="POST" class="d-inline">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </form>
 
                         <!-- Buy Now Form -->
-                        <form method="POST" action="{{ route('order.place', $product->id) }}">
-                        @csrf
-                        <input type="hidden" name="quantity" value="1">
-                        <button type="submit" class="btn btn-success">Buy Now</button>
+                        <form action="{{ route('checkout.buyNow') }}" method="POST" class="d-inline">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn btn-success">Buy Now</button>
                         </form>
 
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
