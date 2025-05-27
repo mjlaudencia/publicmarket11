@@ -21,7 +21,7 @@
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ ucfirst($user->role) }}</td>
-                <td>{{ $user->created_at->toFormattedDateString() }}</td>
+                <td>{{ $user->created_at ? $user->created_at->toFormattedDateString() : 'N/A' }}</td>
             </tr>
             @endforeach
         </tbody>
