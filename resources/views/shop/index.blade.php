@@ -109,29 +109,32 @@
 
                             <hr>
 
-                            <!-- Modal Footer: Add to Cart + Buy Now -->
                             @if($product->stock > 0)
+                            <div class="mb-3 d-flex align-items-center gap-3">
+                                <label for="quantityInput{{ $product->id }}" class="form-label mb-0">Quantity:</label>
+                                <input
+                                    type="number"
+                                    id="quantityInput{{ $product->id }}"
+                                    min="1"
+                                    max="{{ $product->stock }}"
+                                    value="1"
+                                    class="form-control form-control-sm"
+                                    style="width: 80px;"
+                                >
+                            </div>
+
                             <div class="d-flex flex-wrap gap-3 mb-3">
                                 <!-- Add to Cart Form -->
-                                <form action="{{ route('cart.add', $product->id) }}" method="POST" class="d-flex align-items-center gap-2">
+                                <form action="{{ route('cart.add', $product->id) }}" method="POST" class="d-flex align-items-center gap-2" onsubmit="syncQuantity(event, {{ $product->id }}, 'addToCartQuantity{{ $product->id }}')">
                                     @csrf
-                                    <input type="number" name="quantity" value="1" min="1" max="{{ $product->stock }}" class="form-control form-control-sm" style="width: 80px;">
+                                    <input type="hidden" name="quantity" id="addToCartQuantity{{ $product->id }}" value="1">
                                     <button type="submit" class="btn btn-outline-primary btn-sm px-4">Add to Cart</button>
                                 </form>
 
                                 <!-- Buy Now Form -->
-                                <form action="{{ route('order.place', $product->id) }}" method="POST" class="d-flex align-items-center gap-2">
+                                <form action="{{ route('order.place', $product->id) }}" method="POST" class="d-flex align-items-center gap-2" onsubmit="syncQuantity(event, {{ $product->id }}, 'buyNowQuantity{{ $product->id }}')">
                                     @csrf
-                                    <input
-                                        type="number"
-                                        name="quantity"
-                                        min="1"
-                                        max="{{ $product->stock }}"
-                                        value="1"
-                                        class="form-control form-control-sm"
-                                        style="width: 80px;"
-                                        required
-                                    >
+                                    <input type="hidden" name="quantity" id="buyNowQuantity{{ $product->id }}" value="1" required>
                                     <button type="submit" class="btn btn-primary btn-sm px-4">Buy Now</button>
                                 </form>
                             </div>
@@ -143,7 +146,6 @@
 
                             <hr>
 
-                            <!-- Average Rating -->
                             <p>
                                 <strong>Average Rating:</strong>
                                 @if ($product->averageRating())
@@ -153,7 +155,6 @@
                                 @endif
                             </p>
 
-                            <!-- Customer Rating Form -->
                             @auth
                                 @if (auth()->user()->role === 'customer')
                                     <form action="{{ route('ratings.store') }}" method="POST" class="mb-3">
@@ -180,7 +181,6 @@
                                 @endif
                             @endauth
 
-                            <!-- Customer Reviews -->
                             <div>
                                 <h6 class="fw-semibold">Customer Reviews:</h6>
                                 @forelse ($product->ratings as $rating)
@@ -204,4 +204,32 @@
     </div>
     @endforeach
 </div>
+
+@push('scripts')
+<script>
+function syncQuantity(event, productId, hiddenInputId) {
+    event.preventDefault();
+
+    const quantityInput = document.getElementById('quantityInput' + productId);
+    const hiddenInput = document.getElementById(hiddenInputId);
+
+    if (!quantityInput || !hiddenInput) return;
+
+    // Validate quantity
+    let qty = parseInt(quantityInput.value);
+    const max = parseInt(quantityInput.max);
+    const min = parseInt(quantityInput.min);
+
+    if (isNaN(qty) || qty < min) qty = min;
+    else if (qty > max) qty = max;
+
+    quantityInput.value = qty;
+    hiddenInput.value = qty;
+
+    // Submit the form after updating hidden quantity
+    event.target.submit();
+}
+</script>
+@endpush
+
 @endsection
