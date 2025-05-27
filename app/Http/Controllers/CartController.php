@@ -9,10 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    public function index()
+public function index()
 {
     $cartItems = CartItem::with('product')
         ->where('user_id', Auth::id())
+        ->orderBy('created_at', 'desc')  // NEW: newest first
         ->get();
 
     // Filter out items with missing product
