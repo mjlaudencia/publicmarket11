@@ -64,3 +64,22 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## USer Credentials
+
+Customer: Elcid Spart Mamanao
+email: elcid@gmail.com
+password: elcid123
+
+Vendor: Karl Lester Ancheta
+email: ancheta@gmail.com
+password: ancheta
+
+Delivery: Grab
+email: grab@gmail.com
+password: grab123
+
+Admin: super admin
+email: admin@example.com
+password: admin123
+
